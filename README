@@ -1,0 +1,4 @@
+1. Add student to adm group
+2. Make journal persistent
+3. Read access to root homedir and .bash_history
+4. PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND" 
