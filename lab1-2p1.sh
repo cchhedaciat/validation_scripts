@@ -1,27 +1,5 @@
 #!/bin/bash
 
-# List of commands to check
-
-RESTART=(
-    "sudo systemctl stop systemd-sysctl.service"
-    "systemctl status systemd-sysctl.service"
-    "sudo systemctl start systemd-sysctl.service"
-    "systemctl is-active systemd-sysctl.service"
-    "sudo systemctl restart systemd-sysctl.service"
-    "sudo systemctl reload-or-restart systemd-sysctl.service"
-    "systemctl list-unit-files"
-    "sudo systemctl disable bluetooth.service"
-    "sudo systemctl enable bluetooth.service"
-    "sudo systemctl mask systemd-sysctl.service"
-    "sudo systemctl unmask systemd-sysctl.service"
-    "runlevel"
-    "systemctl get-default"
-    "sudo systemctl set-default rescue.target"
-    "systemctl cat rescue.target"
-    "sudo systemctl reboot"
-)
-
-
 HISTFILE="${HOME}/.bash_history"
 
 systemd_list_services() {
