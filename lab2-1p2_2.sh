@@ -53,6 +53,58 @@ hongkong_time() {
 	fi
 }
 
-#dates
-#timedatectl
+system_clock() {
+    LIST=(
+        "hwclock"
+        "hwclock -s"
+        "date ; hwclock"
+        "ln -sf /etc/localtime.bak /etc/localtime"
+        "TZ=Africa/Lagos date"
+    )
+
+    echo
+    echo "Check system_clock commands..."
+    for cmd in "${LIST[@]}"
+    do
+        if grep -Fxq "$cmd" "$HISTFILE"; then
+            echo "[FOUND] $cmd"
+        else
+            echo "[MISSING] $cmd"
+        fi
+    done
+}
+
+system_locales() {
+    LIST=(
+        "localectl"
+        "echo $LANG"
+        "locale"
+        "locale -k LC_MONETARY"
+        "locale -k LC_ADDRESS"
+        "locale countrty_name"
+        "locale height width"
+        "LANG=en_ZM.utf8"
+    )
+
+    echo
+    echo "Check system_clock commands..."
+    for cmd in "${LIST[@]}"
+    do
+        if grep -Fxq "$cmd" "$HISTFILE"; then
+            echo "[FOUND] $cmd"
+        else
+            echo "[MISSING] $cmd"
+        fi
+    done
+
+    if $LANG == "en_US.utf8"; then
+        echo "[FOUND] LANG=en_US.utf8"
+    else
+        echo "[MISSING] LANG=en_US.utf8"
+    fi
+}
+
+dates
+timezones
 hongkong_time
+system_clock
