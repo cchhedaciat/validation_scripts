@@ -25,7 +25,7 @@ systemd_list_services() {
 }
 
 systemd_modify_services() {
-    MODIFY=(
+    LIST=(
         "sudo systemctl stop systemd-sysctl.service"
         "systemctl status systemd-sysctl.service"
         "sudo systemctl start systemd-sysctl.service"
@@ -41,7 +41,7 @@ systemd_modify_services() {
 
     echo
     echo "Check systemd modify ..."
-    for cmd in "${MODIFY[@]}"
+    for cmd in "${LIST[@]}"
     do
         if grep -Fxq "$cmd" "$HISTFILE"; then
             echo "[FOUND] $cmd"
@@ -49,6 +49,13 @@ systemd_modify_services() {
             echo "[MISSING] $cmd"
         fi
     done
+
+    if systemctl is-active systemd-sysctl.service --quiet
+    then
+        echo "[FOUND] systemd-sysctl.service is active"
+    else
+        echo "[NOT FOUND] systemd-sysctl.service is not active"
+    fi
 }
 
 systemd_isolate() {
@@ -58,7 +65,7 @@ systemd_isolate() {
         "exit"
     )
 
-    HISTFILE=~root/.bash_history
+    local HISTFILE=~root/.bash_history
 
     echo
     echo "Check systemd isolate .."
@@ -78,7 +85,7 @@ systemd_isolate() {
 }
 
 systemd_change_target() {
-    CHANGE_TARGET=(
+    LIST=(
         "sudo systemctl set-default rescue.target"
         "systemctl cat rescue.target"
         "sudo systemctl reboot"
@@ -91,8 +98,9 @@ systemd_change_target() {
         echo "[FOUND] systemd isolate rescue.target"
     fi
 
-    for cmd in "${CHANGE_TARGET[@]}"
+    for cmd in "${LIST[@]}"
     do
+        echo $cmd
         if grep -Fxq "$cmd" "$HISTFILE"; then
             echo "[FOUND] $cmd"
         else
@@ -100,7 +108,7 @@ systemd_change_target() {
         fi
     done
 
-       if who -r|grep -q "run-level 5"
+    if who -r|grep -q "run-level 5"
     then
         echo "[FOUND] sudo systemctl set-default graphical.target"
     fi
